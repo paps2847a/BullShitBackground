@@ -2,7 +2,7 @@ using System.Reflection;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 
-namespace work;
+namespace work.Logic;
 
 public class AudioManager
 {

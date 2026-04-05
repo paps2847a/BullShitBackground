@@ -2,7 +2,7 @@ using System;
 using Microsoft.Win32;
 using PuppeteerSharp;
 
-namespace work;
+namespace work.Logic;
 
 public class PurpetterManager
 {
