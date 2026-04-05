@@ -47,13 +47,20 @@ public class PurpetterManager
                 return;
             }
 
+            List<IPage> pages = new List<IPage>();
             using var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = false, ExecutablePath = gg });
-            var page = await browser.NewPageAsync();
-            await page.GoToAsync(urlToVisit);
-            await page.Keyboard.PressAsync("Enter");
 
-            await Task.Delay(30000); // Esperamos 5 segundos para ver la página antes de cerrar
-            await page.CloseAsync();
+            for(int count = 0; count < 10; count++)
+            {
+                var page = await browser.NewPageAsync();
+                await page.GoToAsync(urlToVisit);
+                await page.Keyboard.PressAsync("Enter");
+                pages.Add(page);
+            }
+
+            pages.ForEach(p => p.SetViewportAsync(new ViewPortOptions { Width = 800, Height = 600 }));
+            await Task.Delay(40000); // Esperamos 5 segundos para ver la página antes de cerrar
+            pages.ForEach(async page => await page.CloseAsync());
         }
         catch (Exception ex)
         {

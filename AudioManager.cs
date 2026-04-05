@@ -1,3 +1,4 @@
+using System.Reflection;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 
@@ -22,9 +23,14 @@ public class AudioManager
 
     public WaveOutEvent InitAll()
     {
-        string audioFilePath = $".{Path.DirectorySeparatorChar}assets{Path.DirectorySeparatorChar}audio.mp3";
+        string resourceName = "work.assets.audio.mp3"; // Ojo: Revisa el namespace
+        var assembly = Assembly.GetExecutingAssembly();
+        
+        Stream? stream = assembly.GetManifestResourceStream(resourceName);
+        if (stream == null)
+            throw new Exception($"No se pudo encontrar el recurso: {resourceName}");
 
-        AudioFileReader audioFileReader = new AudioFileReader(audioFilePath);
+        StreamMediaFoundationReader audioFileReader = new StreamMediaFoundationReader(stream);
         WaveOutEvent waveOutEvent = new WaveOutEvent();
         waveOutEvent.Init(audioFileReader);
 
